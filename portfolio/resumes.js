@@ -8,9 +8,12 @@
     es: {title:'Currículums', intro:'Elige una versión por área de trabajo.', format:'PDF en portugués · 1 página', view:'Ver PDF', download:'Descargar', link:'Copiar enlace', copied:'Enlace copiado', failed:'No se pudo copiar. Abre el PDF y copia su dirección.', labels:['Diseño y dirección creativa','Belleza','UX/UI y desarrollo','Datos y BI','Arquitectura y consultoría aeronáutica']}
   }[lang];
   const ids=['design','beleza','ux-ui-desenvolvimento','dados-bi','arquitetura-consultoria'];
+  const selectedResume={beleza:'beleza',design:'design',produtos:'ux-ui-desenvolvimento',software:'ux-ui-desenvolvimento',dados:'dados-bi',consultoria:'arquitetura-consultoria'}[document.documentElement.dataset.portfolioArea];
+  if(selectedResume)copy.title={pt:'Currículo',en:'Résumé',es:'Currículum'}[lang];
   const section=document.querySelector('#curriculos');
   section.querySelector('h2').textContent=copy.title;
   section.querySelector('.resume-intro').textContent=copy.intro;
+  section.querySelector('.resume-intro').hidden=Boolean(selectedResume);
   document.querySelectorAll('[data-resumes]').forEach(link=>{
     link.textContent=copy.title;
     link.href=window.portfolioRoutes.href('?page=sobre&lang='+lang+'#curriculos',lang);
@@ -26,6 +29,7 @@
   const list=section.querySelector('.resume-list');
   const status=section.querySelector('[role="status"]');
   ids.forEach((id,index)=>{
+    if(selectedResume&&id!==selectedResume)return;
     const path='/curriculos/bruno-nascimento-'+id+'-pt.pdf';
     const row=document.createElement('article');row.className='resume-row';
     const text=document.createElement('div');text.className='resume-description';
