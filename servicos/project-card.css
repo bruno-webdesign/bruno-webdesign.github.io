@@ -1,0 +1,244 @@
+/* Original reference artwork; only the service label is typeset over its old label. */
+.path-tabs button[data-path="sites"][aria-pressed="true"]{background:#1500ff;border-color:#1500ff;color:#fff}
+.path-tabs button[data-path="marca"][aria-pressed="true"]{background:#ff009a;border-color:#ff009a;color:#230d20}
+.path-tabs button[data-path="divulgacao"][aria-pressed="true"]{background:#ff8200;border-color:#ff8200;color:#241406}
+.offer-panel[data-path="sites"] .offer-label{background:#1500ff22;border-color:#8075ff66;color:#aaa1ff}
+.offer-panel[data-path="marca"] .offer-label{background:#ff009a15;border-color:#ff009a44;color:#ff72c8}
+.offer-panel[data-path="divulgacao"] .offer-label{background:#ff820015;border-color:#ff820044;color:#ffb35c}
+.offer-options button:nth-child(1){--option-bg:#101010}
+.offer-options button:nth-child(2){--option-bg:#282828}
+.offer-options button:nth-child(3){--option-bg:#404040}
+.offer-options button[data-option]{background:var(--option-bg,#1a1a1a);color:#bdb8bc;border-color:#fff4;box-shadow:none}
+.offer-options button[data-option][aria-pressed="false"]{border-color:transparent;box-shadow:inset 0 0 0 .5px #fff4}
+.offer-options button[data-option] small{color:#bbb}
+.offer-options button[data-option][aria-pressed="true"]{color:#fff;border-color:#fff9}
+.offer-options{height:var(--options-stable-height,auto);align-items:center;transition:grid-template-columns 220ms cubic-bezier(.23,1,.32,1)}
+.offer-options button[data-option]{min-width:0;transition:border-color 180ms ease,color 180ms ease,box-shadow 180ms ease,padding-block 220ms cubic-bezier(.23,1,.32,1),font-size 220ms cubic-bezier(.23,1,.32,1),line-height 220ms cubic-bezier(.23,1,.32,1)}
+.offer-options button[data-option] small{transition:font-size 220ms cubic-bezier(.23,1,.32,1)}
+.offer-options button[data-option][aria-pressed="true"]{padding-block:13px;font-size:13px;line-height:17px}
+.offer-options button[data-option][aria-pressed="true"] small{font-size:11px}
+@media(min-width:601px){
+  .offer-options:has(button:nth-child(1)[aria-pressed="true"]){grid-template-columns:1.08fr .96fr .96fr}
+  .offer-options:has(button:nth-child(2)[aria-pressed="true"]){grid-template-columns:.96fr 1.08fr .96fr}
+  .offer-options:has(button:nth-child(3)[aria-pressed="true"]){grid-template-columns:.96fr .96fr 1.08fr}
+  .offer-options.two:has(button:nth-child(1)[aria-pressed="true"]){grid-template-columns:1.04fr .96fr}
+  .offer-options.two:has(button:nth-child(2)[aria-pressed="true"]){grid-template-columns:.96fr 1.04fr}
+}
+@media(max-width:600px){.offer-options button[data-option][aria-pressed="true"]{padding-block:14px;font-size:15px}.offer-options button[data-option][aria-pressed="true"] small{font-size:13px}}
+@media(max-width:359px){.offer-options button[data-option][aria-pressed="true"]{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.offer-options,.offer-options button[data-option],.offer-options button[data-option] small{transition:none}}
+.price-summary{display:grid;gap:20px}
+.payment-label{font-size:13px;line-height:18px;color:#bdb7bb;margin:0 0 10px}
+.payment-total .price-row{margin-bottom:0}
+.pricing-art{overflow:visible}
+.pricing-project-card{position:absolute;left:-19%;top:-35px;width:400px;min-width:520px;max-width:none;container-type:inline-size;pointer-events:none;animation:project-card-turn 16.5s linear infinite;transform-origin:center;filter:drop-shadow(0 10px 14px #00000029)}
+/* Keep the approved card face, excluding the heavy shadow baked into the PNG. */
+.pricing-project-card>img{display:block;width:100%;height:auto;max-width:none;-webkit-mask-image:url('assets/project-card/card-face-mask.svg');mask-image:url('assets/project-card/card-face-mask.svg');-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+.project-card-label{position:absolute;left:14.7%;top:74.1%;width:17%;height:3.5%;transform:rotate(-8deg);transform-origin:0 50%;display:flex;align-items:center;justify-content:center;background-image:url('assets/project-card/reference-card.webp');background-size:588.235% auto;background-position:17.7% 70.6%;color:#ffe3fa;font-family:ReferenceLabel,monospace;font-size:1.6cqw;line-height:1;letter-spacing:.11cqw;text-transform:uppercase;white-space:nowrap}
+.project-card-label>span{position:relative}
+.hero-offer{overflow:hidden}
+.hero-project-card{position:absolute;z-index:-1;width:310px;right:-27%;top:-12px;container-type:inline-size;pointer-events:none;animation:reference-member-float 16.5s linear infinite}
+.hero-project-card>img{display:block;width:100%;height:auto;max-width:none}
+.hero-project-card .project-card-label{left:17%;top:74.2%;width:16.5%;height:4.2%;transform:rotate(-10deg);background-image:url('assets/project-card/hero-reference-card.webp');background-size:1000% auto;background-position:23.5% 71%;font-size:1.6cqw}
+.pricing-art>div:last-child{position:relative;z-index:1}
+@keyframes project-card-turn{0%,48.48%,100%{transform:rotate(0deg)}24.24%{transform:rotate(7deg)}72.72%,75.75%{transform:rotate(-7deg)}}
+@media(max-width:991px){.pricing-project-card{width:calc(100% + 40px);min-width:0;max-width:520px;left:-20px;top:-15px}}
+@media(max-width:991px){.hero-project-card{width:250px}}
+@media(max-width:767px){.pricing-project-card{width:calc(100% + 24px);max-width:360px;left:50%;translate:-50% 0;top:0}.pricing-art{padding-top:280px}}
+@media(max-width:767px){.hero-project-card{width:66%;right:0;top:0;animation-name:mobile-notebook-float}}
+@media(max-width:479px){.pricing-art{padding-top:250px}}
+@media(max-width:359px){.pricing-art{padding-top:220px}}
+@media(prefers-reduced-motion:reduce){.pricing-project-card,.hero-project-card{animation:none}}
+
+/* Original yellow face from the reference, on the existing dimensional contact button. */
+.card-contact .avatar.avatar-smile{overflow:hidden;background:radial-gradient(circle at 28% 22%,#fff9b0 0%,#ffe75a 22%,#ffd817 48%,#edb400 78%,#a96900 100%);box-shadow:inset 1px 2px 3px #fff9,inset -2px -3px 5px #8c4f0040,0 5px 9px #21005a33}
+.card-contact .avatar-smile>img{display:block;width:100%;height:100%;object-fit:contain;max-width:none}
+
+/* Original blue/purple reference smile, with a pink dimensional surface. */
+.faq-card .avatar.large-avatar.avatar-smile-purple{overflow:hidden;background:radial-gradient(circle at 28% 22%,#ffe1f1 0%,#ff75bd 22%,#ff0084 48%,#c50065 78%,#79003f 100%);box-shadow:inset 2px 3px 6px #fff9,inset -4px -5px 10px #78003d55,0 8px 16px #21005a33}
+.faq-card .avatar-smile-purple>img{display:block;width:100%;height:100%;object-fit:contain;max-width:none}
+
+/* Contact fields stay on the page until the visitor sends the WhatsApp message. */
+.contact-details{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 20px}
+.contact-details label{display:block;min-width:0;font-size:14px;line-height:20px;color:#252125}
+.contact-details label small{font-size:12px;color:#70676e}
+.contact-details input{display:block;width:100%;min-width:0;min-height:46px;padding:12px 13px;border:1px solid #d0c8cc;border-radius:8px;background:#fff;color:#181418;margin-top:8px;font-size:16px;line-height:21px}
+#contact-dialog .contact-send-note{font-size:12px;line-height:18px;color:#70676e;margin:0 0 20px}
+@media(max-width:600px){.contact-details{grid-template-columns:1fr;gap:14px}}
+
+/* Brevo capture stays confined to the existing confirmation dialog. */
+.contact-details [hidden],#contact-dialog [hidden]{display:none!important}
+.contact-details .contact-email-wide{grid-column:1/-1}
+.lead-honeypot{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+#lead-verification:empty{display:none}
+#lead-verification{margin:0 0 14px;max-width:100%}
+#contact-dialog #lead-status{font-size:13px;line-height:19px;margin:0 0 14px}
+#lead-status[data-error="true"]{color:#9b2147}
+#contact-dialog .lead-fallback{display:block;font-size:13px;line-height:19px;text-decoration:underline;margin:0 0 16px}
+#whatsapp-link[aria-disabled="true"]{opacity:.6;cursor:wait}
+
+/* Visitors can describe their project without editing package totals. */
+.contact-details .contact-need{grid-column:1/-1}
+.contact-details .contact-need textarea{min-height:110px;background:#fff;color:#181418;line-height:21px}
+.contact-details .contact-need textarea::placeholder{color:#8d858a;opacity:1}
+#contact-dialog .contact-selection{margin:0 0 20px}
+#contact-dialog .contact-selection>span{font-size:13px;line-height:19px;color:#70676e}
+#contact-dialog .contact-selection pre{margin:8px 0 0;font-size:13px;line-height:19px}
+
+/* Compact confirmation: one heading and a short, read-only selection card. */
+#contact-dialog .dialog-top{gap:16px;margin-bottom:22px}
+#contact-dialog .dialog-top h2{margin:0;font-size:32px;line-height:36px;letter-spacing:-1px;color:#181418}
+#contact-dialog .dialog-top button{flex:none;margin-left:auto}
+#contact-dialog .contact-selection{padding:14px 16px;border:1px solid #727272;border-radius:12px;background:linear-gradient(150deg,#505050,#383838);color:#fff;margin:0 0 20px;box-shadow:inset 0 1px 1px #ffffff55,inset 1px 0 1px #ffffff1a,0 4px 12px #00000012}
+#contact-package-summary .contact-selected-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+#contact-package-summary .contact-selected-heading strong{font-size:18px;line-height:22px;font-weight:500;letter-spacing:-.3px}
+#contact-package-summary .contact-selected-heading>small{font-size:11px;line-height:15px;color:#d4cfd2}
+#contact-package-summary .contact-selected-totals{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:8px;padding-top:8px;border-top:1px dashed #ffffff30}
+#contact-package-summary .contact-selected-totals>span{display:grid;gap:4px}
+#contact-package-summary .contact-selected-totals small{font-size:11px;line-height:15px;font-weight:400;color:#d4cfd2}
+#contact-package-summary .contact-selected-totals b{font-size:24px;line-height:27px;font-weight:500;letter-spacing:-.7px}
+#contact-package-summary .contact-selected-totals b small{margin-left:3px;letter-spacing:0}
+#contact-package-summary .contact-selected-addons{position:relative;margin-top:12px;padding:9px 10px 7px;border:1px solid #ffffff30;border-radius:6px;background:linear-gradient(#ffffff0d,#0000000d);box-shadow:inset 0 1px 1px #ffffff15}
+#contact-package-summary .contact-selected-addons>span{position:absolute;top:-7px;left:9px;padding:1px 5px;border:1px solid #ffffff25;border-radius:3px;background:#454545;color:#d4cfd2;text-transform:uppercase;font-size:8px;line-height:12px}
+#contact-package-summary .contact-selected-addons p{display:flex;flex-wrap:wrap;gap:5px 14px;margin:0;color:#f0edef;font-size:11px;line-height:16px}
+@media(max-width:600px){#contact-dialog .dialog-top h2{font-size:28px;line-height:32px}}
+
+/* Use the portfolio favicon as the compact header signature. */
+.hero-nav .wordmark.site-favicon{flex:none;line-height:0}
+.hero-nav .site-favicon img{display:block;width:40px;height:40px}
+
+/* Match Designjoy outline header buttons: transparent to white in 200 ms. */
+.hero-nav .btn-outline{border-color:#ddced3;transition:all .2s ease}
+.hero-nav .btn-outline:hover{background-color:#fff;border-color:#fff;transform:none}
+@media(prefers-reduced-motion:reduce){.hero-nav .btn-outline{transition:none}}
+
+/* Reference carousel motion, with room to align the final card at the start. */
+.benefit-track{scroll-behavior:auto}
+.benefit-track::after{content:"";flex:0 0 var(--benefit-end-space,0px);align-self:stretch;pointer-events:none}
+.benefit-track.is-sliding{scroll-snap-type:none}
+.track-controls button{transition:transform .3s ease;background:#fff;transform:scale(1);transform-origin:center}
+@media(hover:hover) and (pointer:fine){.track-controls button:hover{background:#fff;transform:scale(.8)}}
+.track-controls button:active{transform:scale(.8)}
+@media(prefers-reduced-motion:reduce){.track-controls button{transition:none}.track-controls button:hover,.track-controls button:active{transform:none}}
+
+/* Extend the carousel viewport to the container border, keeping its left alignment. */
+.benefit-track{margin-right:-40px;padding-right:0}
+@media(max-width:767px){.benefit-track{margin-right:-20px;padding-right:0}}
+@media(max-width:359px){.benefit-track{margin-right:-16px;padding-right:0}}
+
+/* Three-position service selector: one track, one sliding selection. */
+.path-guide{text-align:center;color:#716a70;font-size:16px;line-height:22px;margin:32px auto 14px}
+.path-tabs.path-toggle{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;width:min(100%,460px);margin:0 auto 60px;padding:5px;border:1px solid #d2c8ce;border-radius:999px;background:#e2dbdf;box-shadow:inset 0 1px 3px #30252e0c}
+.path-tabs.path-toggle::before{content:"";position:absolute;z-index:-1;left:5px;top:5px;bottom:5px;width:calc((100% - 10px)/3);border-radius:999px;background:#1500ff;box-shadow:0 2px 5px #20102c20;transform:translateX(0);transition:transform 240ms cubic-bezier(.32,.72,0,1),background-color 200ms ease}
+.path-tabs.path-toggle:has([data-path="marca"][aria-pressed="true"])::before{transform:translateX(100%);background:#ff009a}
+.path-tabs.path-toggle:has([data-path="divulgacao"][aria-pressed="true"])::before{transform:translateX(200%);background:#ff8200}
+.path-tabs.path-toggle button[data-path]{position:relative;min-width:0;min-height:46px;padding:12px 8px;border:0;border-radius:999px;background:transparent;color:#5e555c;font-size:15px;line-height:22px;white-space:nowrap;box-shadow:none;transition:color 180ms ease}
+.path-tabs.path-toggle button[data-path][aria-pressed="true"]{background:transparent;border-color:transparent;color:#fff}
+.path-tabs.path-toggle button[data-path="marca"][aria-pressed="true"]{color:#230d20}
+.path-tabs.path-toggle button[data-path="divulgacao"][aria-pressed="true"]{color:#241406}
+.path-tabs.path-toggle button:focus-visible{outline:2px solid #151015;outline-offset:2px}
+.path-tabs.path-toggle.is-keyboard::before{transition:none}
+@media(hover:hover) and (pointer:fine){.path-tabs.path-toggle button[data-path]:hover{color:#171017}.path-tabs.path-toggle button[data-path="sites"][aria-pressed="true"]:hover{color:#fff}}
+@media(max-width:767px){.path-guide{font-size:14px;line-height:20px;margin-top:28px}.path-tabs.path-toggle{margin-bottom:36px}}
+@media(max-width:400px){.path-tabs.path-toggle button[data-path]{font-size:13px;padding-inline:4px}}
+@media(prefers-reduced-motion:reduce){.path-tabs.path-toggle::before,.path-tabs.path-toggle button[data-path]{transition:none}}
+
+/* Match the selected package border to its service toggle. */
+.offer-panel[data-path="sites"]{--package-accent:#1500ff}
+.offer-panel[data-path="marca"]{--package-accent:#ff009a}
+.offer-panel[data-path="divulgacao"]{--package-accent:#ff8200}
+.offer-panel[data-path] .offer-options button[data-option][aria-pressed="true"]{border-color:var(--package-accent);box-shadow:inset 0 0 0 1px var(--package-accent)}
+
+/* Show included deliveries beside the totals when the panel has enough room. */
+.offer-panel{container:offer-content / inline-size}
+.offer-values{min-width:0}
+@media(min-width:768px){
+ @container offer-content (min-width:450px){
+  .offer-overview{display:grid;grid-template-columns:minmax(205px,.95fr) minmax(0,1.05fr);align-items:start;gap:24px;margin:0 0 24px}
+  .offer-overview>.included{min-width:0;margin:14px 0 0;padding:28px 18px 22px}
+  .offer-overview>.included>span{left:18px}
+  .offer-overview>.included ul{grid-template-columns:minmax(0,1fr);gap:10px}
+  .offer-overview .price{font-size:clamp(44px,10cqi,58px)}
+ }
+}
+
+/* Keep the Black Friday comparison visible, including when extras are selected. */
+.offer-options .option-pricing .option-regular{display:block;margin-bottom:2px;color:#aaa;font-weight:400;text-decoration-thickness:1px}
+.offer-options .option-pricing .option-current{display:block}
+.payment-total .regular-comparison{font-size:17px;line-height:22px;color:#aaa;margin:0 0 8px}
+.payment-total .regular-comparison s{text-decoration-thickness:1.3px}
+
+/* Keep both prices on the same line in the compact package selector. */
+.offer-options button[data-option] .option-pricing{display:flex;align-items:baseline;gap:6px;white-space:nowrap}
+.offer-options .option-pricing .option-regular{margin-bottom:0}
+
+/* Original reference smile, cropped at the lower-right edge of the pricing panel. */
+.package-corner-smile{position:absolute;right:0;bottom:0;width:150px;height:164px;overflow:hidden;border-bottom-right-radius:18px;color:var(--package-accent,#1500ff);pointer-events:none;z-index:0}
+.package-corner-smile>svg{position:absolute;right:-115px;bottom:-100px;display:block;width:265px;height:264px;max-width:none;stroke:none}
+.offer-panel>.offer-cta,.offer-panel>.panel-caption{position:relative;z-index:1;max-width:calc(100% - 115px)}
+.offer-panel>.panel-caption{min-height:32px}
+@media(max-width:600px){
+ .package-corner-smile{width:101px;height:110px}
+ .package-corner-smile>svg{width:178px;height:177px;right:-77px;bottom:-67px}
+ .offer-panel>.offer-cta,.offer-panel>.panel-caption{max-width:calc(100% - 75px)}
+ .offer-panel>.panel-caption{min-height:36px}
+}
+
+/* Reference smile on the package button, colored by the selected service. */
+.offer-cta>.package-cta-icon{flex-shrink:0;background:var(--package-accent,#1500ff);box-shadow:inset 0 1px 1px #ffffff40}
+.offer-cta>.package-cta-icon>img{display:block;width:28px;height:24px;max-width:none;pointer-events:none;animation:project-card-turn 16.5s linear infinite;transform-origin:center}
+@media(prefers-reduced-motion:reduce){.offer-cta>.package-cta-icon>img{animation:none}}
+
+/* Exact sampled pixels from the approved project cards: lightest first, vivid last. */
+.offer-panel[data-path="sites"]:has(.offer-options button[data-option="entrada"][aria-pressed="true"]){--package-accent:#8387fc}
+.offer-panel[data-path="sites"]:has(.offer-options button[data-option="site"][aria-pressed="true"]){--package-accent:#4339f9}
+.offer-panel[data-path="sites"]:has(.offer-options button[data-option="institucional"][aria-pressed="true"]){--package-accent:#0902fc}
+.offer-panel[data-path="marca"]:has(.offer-options button[data-option="brand-0"][aria-pressed="true"]){--package-accent:#fa5fc4}
+.offer-panel[data-path="marca"]:has(.offer-options button[data-option="brand-1"][aria-pressed="true"]){--package-accent:#f70286}
+.offer-panel[data-path="divulgacao"]:has(.offer-options button[data-option="social"][aria-pressed="true"]){--package-accent:#fcae35}
+.offer-panel[data-path="divulgacao"]:has(.offer-options button[data-option="anuncios"][aria-pressed="true"]){--package-accent:#f99c0f}
+.offer-panel[data-path="divulgacao"]:has(.offer-options button[data-option="seo"][aria-pressed="true"]){--package-accent:#fb5902}
+
+/* Original Linear icon geometry; package colors stay tied to the approved palette. */
+.included li{padding-left:24px}
+.included li::before{content:"";position:absolute;left:0;top:2px;width:16px;height:16px;background:var(--package-accent,#d0d6e0);-webkit-mask:url("assets/comparison/linear-check.svg") center / contain no-repeat;mask:url("assets/comparison/linear-check.svg") center / contain no-repeat}
+.included li.feature-unavailable{color:#aaa}
+.included li.feature-unavailable::before{content:"";left:-2px;top:0;width:20px;height:20px;background:#aaa;-webkit-mask-image:url("assets/comparison/linear-x.svg");mask-image:url("assets/comparison/linear-x.svg")}
+.included .feature-note{display:block;margin-top:4px;font-size:12px;line-height:1.4;color:#aaa}
+
+/* Native checkboxes retain their semantics and keyboard behavior, with the same circular glyph as deliveries. */
+.addon input[type="checkbox"]{appearance:none;-webkit-appearance:none;display:block;width:16px;height:16px;min-width:16px;flex:0 0 16px;margin:2px 0 0;border:1px solid #888;border-radius:50%;background:transparent;cursor:pointer;mask:none;-webkit-mask:none}
+.addon input[type="checkbox"]:checked{border:0;border-radius:0;background:var(--package-accent,#d0d6e0);-webkit-mask:url("assets/comparison/linear-check.svg") center / contain no-repeat;mask:url("assets/comparison/linear-check.svg") center / contain no-repeat}
+.addon:has(input:focus-visible){outline:2px solid var(--package-accent,#d0d6e0);outline-offset:2px}
+@media(forced-colors:active){.addon input[type="checkbox"],.addon input[type="checkbox"]:checked{appearance:auto;-webkit-appearance:checkbox;border:initial;background:initial;-webkit-mask:none;mask:none;accent-color:auto}}
+
+/* Match the original pricing divider: white, dashed, one CSS pixel. */
+.offer-panel>.offer-description{border-bottom:1px dashed #fff}
+
+/* Carry the reference divider through both expandable package sections. */
+.offer-panel>.scope,.offer-panel>.addons-details{border-top:1px dashed #fff}
+.offer-panel>.addons-details{border-bottom:1px dashed #fff}
+.offer-panel>.addons-details+.chosen-total{border-top:0}
+
+/* The existing FAQ and contact card now form the black page footer. */
+.faq-footer>.faq>.container{padding-top:100px;padding-bottom:80px}
+.faq-footer .faq-left .center-title{margin-top:0;color:#fff}
+.faq-footer .faq-left summary{color:#f5f5f5}
+.faq-footer .faq-left summary::after{filter:invert(1)}
+.faq-footer .faq-left details p{color:#bbb}
+@media(max-width:767px){.faq-footer>.faq>.container{padding-block:44px}}
+
+/* Package selectors show names only; existing horizontal padding and width motion stay intact. */
+.offer-options button[data-option]{display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;line-height:20px;font-weight:500;padding-block:12px}
+.offer-options button[data-option][aria-pressed="true"]{font-size:17px;line-height:22px;font-weight:600;padding-block:16px}
+@media(max-width:600px){.offer-options button[data-option]{font-size:14px;line-height:20px}.offer-options button[data-option][aria-pressed="true"]{font-size:15px;line-height:21px}}
+@media(max-width:359px){.offer-options button[data-option]{font-size:13px;line-height:18px}.offer-options button[data-option][aria-pressed="true"]{font-size:14px;line-height:20px}}
+
+/* Hover feedback: the square stays still; only the arrow moves. */
+.offer-panel>.offer-cta{transition:border-color 200ms ease,box-shadow 200ms ease}
+.offer-cta>.offer-cta-copy,.offer-cta .offer-cta-arrow{width:auto;height:auto;border-radius:0;background:none;box-shadow:none;color:inherit;font-size:inherit;line-height:inherit;font-weight:inherit;letter-spacing:inherit}
+.offer-cta>.offer-cta-copy{display:block;min-width:0;text-align:left}
+.offer-cta .offer-cta-arrow{display:inline-block;transition:transform 220ms cubic-bezier(.23,1,.32,1)}
+.offer-panel>.offer-cta:is(:hover,:focus-visible){border-color:var(--package-accent,#8387fc);box-shadow:inset 0 1px 1px #ffffff40,0 0 0 1px color-mix(in srgb,var(--package-accent,#8387fc) 22%,transparent),0 6px 24px color-mix(in srgb,var(--package-accent,#8387fc) 18%,transparent)}
+.offer-panel>.offer-cta:is(:hover,:focus-visible) .offer-cta-arrow{transform:translate(3px,-3px)}
+@media(prefers-reduced-motion:reduce){.offer-panel>.offer-cta,.offer-cta .offer-cta-arrow{transition:none}.offer-panel>.offer-cta:is(:hover,:focus-visible) .offer-cta-arrow{transform:none}}

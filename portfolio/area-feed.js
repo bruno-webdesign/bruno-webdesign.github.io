@@ -22,7 +22,7 @@
       <span class="services-hero-kicker">Sites e identidade visual</span>
       <h2 id="services-hero-title">Seu negócio<br>merece <em>ser visto.</em></h2>
       <p>Seu negócio, seu site, sua identidade.</p>
-      <a class="services-hero-primary" href="https://bruniversamente.github.io/servicos/">Conhecer os serviços <span aria-hidden="true">↗</span></a>
+      <a class="services-hero-primary" href="/servicos/">Conhecer os serviços <span aria-hidden="true">↗</span></a>
     </div>
     <div class="services-hero-card">
       <span class="services-hero-pill"><i aria-hidden="true"></i>Comece por aqui</span>
@@ -30,13 +30,13 @@
       <div class="services-hero-standard">
         <h3>Seu negócio.<br><em>Na web.</em></h3>
         <p>Compare os pacotes de sites e de marca e site.</p>
-        <a class="services-hero-offer-link" href="https://bruniversamente.github.io/servicos/#pacotes">Ver os pacotes <span aria-hidden="true">↗</span></a>
+        <a class="services-hero-offer-link" href="/servicos/#pacotes">Ver os pacotes <span aria-hidden="true">↗</span></a>
       </div>
       <div class="services-hero-campaign" hidden>
         <p class="services-hero-package">Sites Essencial · 1 página, até 5 seções</p>
         <span class="services-hero-sale-label">Oferta Black Friday</span>
         <p class="services-hero-price"><span>De <s data-hero-regular></s></span><span class="services-hero-price-row"><span class="services-hero-discount" data-hero-discount></span><strong data-hero-price><span class="services-hero-currency">R$ </span><span data-hero-integer></span><span class="services-hero-decimal">,</span><span class="services-hero-cents" data-hero-cents></span></strong></span></p>
-        <a class="services-hero-offer-link" href="https://bruniversamente.github.io/servicos/#pacotes">Ver ofertas da Black Friday <span aria-hidden="true">↗</span></a>
+        <a class="services-hero-offer-link" href="/servicos/#pacotes">Ver ofertas da Black Friday <span aria-hidden="true">↗</span></a>
         <p class="services-hero-deadline"></p>
       </div>
     </div>`;
