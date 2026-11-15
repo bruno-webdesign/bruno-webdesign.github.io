@@ -1,0 +1,48 @@
+{
+  "release": "sites-20261115",
+  "date": "2026-11-13",
+  "areas": [
+    "produtos"
+  ],
+  "projects": {
+    "produtos": [
+      "produtos-01",
+      "produtos-02",
+      "produtos-03",
+      "easyaga-webdesign",
+      "rakestra-identidade",
+      "nove-patios",
+      "alva",
+      "dobra",
+      "modo",
+      "matiz",
+      "pingo",
+      "dito",
+      "vespera"
+    ]
+  },
+  "area_counts": {
+    "produtos": 13
+  },
+  "active_projects": 68,
+  "software_projects": [
+    "rakestra-app",
+    "rakestra-gestao",
+    "agastudio"
+  ],
+  "pending_beauty_review_excluded": true,
+  "animated_areas": [
+    "beleza",
+    "design",
+    "produtos",
+    "dados",
+    "consultoria",
+    "software"
+  ],
+  "review_tools_published": false,
+  "public_resume_languages": [
+    "pt"
+  ],
+  "public_resume_count": 5,
+  "clean_urls": true
+}

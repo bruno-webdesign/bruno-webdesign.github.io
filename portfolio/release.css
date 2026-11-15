@@ -1,0 +1,5 @@
+/* Data/BI thumbnails now use the shared portrait/landscape mosaic. */
+
+/* Keep the complete technical drawing visible, including wide modules. */
+.main[data-area=design] .feed-card[data-project=tfg] .feed-media img{object-fit:contain;object-position:center}
+.main[data-area=consultoria] .feed-card .feed-media img{object-fit:cover}
