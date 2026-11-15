@@ -1,6 +1,6 @@
 /* Final section-by-section comparison, keeping the existing content and catalog. */
-@font-face{font-family:ReferenceSerif;src:url(/brand/assets/final-reference/serif-reference.otf) format('opentype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:ReferenceLabel;src:url(/brand/assets/final-reference/label-reference.otf) format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:ReferenceSerif;src:url(/catalogo/brand/assets/final-reference/serif-reference.otf) format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:ReferenceLabel;src:url(/catalogo/brand/assets/final-reference/label-reference.otf) format('opentype');font-weight:400;font-style:normal;font-display:swap}
 :root{--serif:ReferenceSerif,Instrument,serif;--line:#ddced3;--muted:#99948f}
 em{font-family:var(--serif);font-style:normal;letter-spacing:0}
 .eyebrow{font-family:ReferenceLabel,ui-monospace,monospace;font-size:10px;line-height:20px;letter-spacing:0;margin-bottom:24px}
@@ -61,16 +61,16 @@ em{font-family:var(--serif);font-style:normal;letter-spacing:0}
 .faq-left .center-title{font-size:82px;line-height:78px;margin-bottom:48px;letter-spacing:-3px}
 .faq-left details{padding-bottom:24px}
 .faq-left summary{font-size:20px;line-height:22px;font-weight:400;padding-right:56px;min-height:24px}
-.faq-left summary::after{content:'';width:24px;height:24px;top:0;right:0;background:url(/brand/assets/final-reference/chevron.svg) center/24px 24px no-repeat;transition:transform .5s linear}
+.faq-left summary::after{content:'';width:24px;height:24px;top:0;right:0;background:url(/catalogo/brand/assets/final-reference/chevron.svg) center/24px 24px no-repeat;transition:transform .5s linear}
 .faq-left details[open] summary::after{content:'';transform:rotate(180deg)}
 .faq-left details p{line-height:20px;margin-top:12px}
-.faq-card{width:390px;position:relative;top:auto;border:0;background-color:#000;background-image:url(/brand/assets/final-reference/faq-background.png);background-position:0 100%;background-size:auto;background-repeat:repeat;box-shadow:0 50px 50px #0003;padding:32px;overflow:hidden;transform-origin:0 100%}
+.faq-card{width:390px;position:relative;top:auto;border:0;background-color:#000;background-image:url(/catalogo/brand/assets/final-reference/faq-background.png);background-position:0 100%;background-size:auto;background-repeat:repeat;box-shadow:0 50px 50px #0003;padding:32px;overflow:hidden;transform-origin:0 100%}
 .faq-card .large-avatar{width:130px;height:130px;font-size:42px;margin-bottom:24px}
 .faq-card>h3{font-size:40px;line-height:40px;margin:0 0 24px;letter-spacing:-1px}
 .faq-card>.btn-white{margin-top:0;min-height:60px;line-height:20px;font-size:20px}
 .faq-card>.card-contact{margin-top:32px;min-height:40px;line-height:20px;font-size:14px}
 .faq-card .contact-icon{display:none}
-.faq-card>.card-contact::before{content:'';display:block;flex:none;width:40px;height:40px;background:url(/brand/assets/final-reference/contact-icon.png) center/contain no-repeat}
+.faq-card>.card-contact::before{content:'';display:block;flex:none;width:40px;height:40px;background:url(/catalogo/brand/assets/final-reference/contact-icon.png) center/contain no-repeat}
 .footer .container{padding-top:60px;padding-bottom:60px}
 .footer-flex{gap:32px;min-height:0;align-items:stretch}
 .footer h2{font-size:70px;line-height:66px;max-width:550px;margin:60px 0 24px}

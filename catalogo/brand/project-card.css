@@ -33,13 +33,13 @@
 .pricing-art{overflow:visible}
 .pricing-project-card{position:absolute;left:-19%;top:-35px;width:400px;min-width:520px;max-width:none;container-type:inline-size;pointer-events:none;animation:project-card-turn 16.5s linear infinite;transform-origin:center;filter:drop-shadow(0 10px 14px #00000029)}
 /* Keep the approved card face, excluding the heavy shadow baked into the PNG. */
-.pricing-project-card>img{display:block;width:100%;height:auto;max-width:none;-webkit-mask-image:url(/brand/assets/project-card/card-face-mask.svg);mask-image:url(/brand/assets/project-card/card-face-mask.svg);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
-.project-card-label{position:absolute;left:14.7%;top:74.1%;width:17%;height:3.5%;transform:rotate(-8deg);transform-origin:0 50%;display:flex;align-items:center;justify-content:center;background-image:url(/brand/assets/project-card/reference-card.webp);background-size:588.235% auto;background-position:17.7% 70.6%;color:#ffe3fa;font-family:ReferenceLabel,monospace;font-size:1.6cqw;line-height:1;letter-spacing:.11cqw;text-transform:uppercase;white-space:nowrap}
+.pricing-project-card>img{display:block;width:100%;height:auto;max-width:none;-webkit-mask-image:url(/catalogo/brand/assets/project-card/card-face-mask.svg);mask-image:url(/catalogo/brand/assets/project-card/card-face-mask.svg);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+.project-card-label{position:absolute;left:14.7%;top:74.1%;width:17%;height:3.5%;transform:rotate(-8deg);transform-origin:0 50%;display:flex;align-items:center;justify-content:center;background-image:url(/catalogo/brand/assets/project-card/reference-card.webp);background-size:588.235% auto;background-position:17.7% 70.6%;color:#ffe3fa;font-family:ReferenceLabel,monospace;font-size:1.6cqw;line-height:1;letter-spacing:.11cqw;text-transform:uppercase;white-space:nowrap}
 .project-card-label>span{position:relative}
 .hero-offer{overflow:hidden}
 .hero-project-card{position:absolute;z-index:-1;width:310px;right:-27%;top:-12px;container-type:inline-size;pointer-events:none;animation:reference-member-float 16.5s linear infinite}
 .hero-project-card>img{display:block;width:100%;height:auto;max-width:none}
-.hero-project-card .project-card-label{left:17%;top:74.2%;width:16.5%;height:4.2%;transform:rotate(-10deg);background-image:url(/brand/assets/project-card/hero-reference-card.webp);background-size:1000% auto;background-position:23.5% 71%;font-size:1.6cqw}
+.hero-project-card .project-card-label{left:17%;top:74.2%;width:16.5%;height:4.2%;transform:rotate(-10deg);background-image:url(/catalogo/brand/assets/project-card/hero-reference-card.webp);background-size:1000% auto;background-position:23.5% 71%;font-size:1.6cqw}
 .pricing-art>div:last-child{position:relative;z-index:1}
 @keyframes project-card-turn{0%,48.48%,100%{transform:rotate(0deg)}24.24%{transform:rotate(7deg)}72.72%,75.75%{transform:rotate(-7deg)}}
 @media(max-width:991px){.pricing-project-card{width:calc(100% + 40px);min-width:0;max-width:520px;left:-20px;top:-15px}}
@@ -201,14 +201,14 @@
 
 /* Original Linear icon geometry; package colors stay tied to the approved palette. */
 .included li{padding-left:24px}
-.included li::before{content:"";position:absolute;left:0;top:2px;width:16px;height:16px;background:var(--package-accent,#d0d6e0);-webkit-mask:url(/brand/assets/comparison/linear-check.svg) center / contain no-repeat;mask:url(/brand/assets/comparison/linear-check.svg) center / contain no-repeat}
+.included li::before{content:"";position:absolute;left:0;top:2px;width:16px;height:16px;background:var(--package-accent,#d0d6e0);-webkit-mask:url(/catalogo/brand/assets/comparison/linear-check.svg) center / contain no-repeat;mask:url(/catalogo/brand/assets/comparison/linear-check.svg) center / contain no-repeat}
 .included li.feature-unavailable{color:#aaa}
-.included li.feature-unavailable::before{content:"";left:-2px;top:0;width:20px;height:20px;background:#aaa;-webkit-mask-image:url(/brand/assets/comparison/linear-x.svg);mask-image:url(/brand/assets/comparison/linear-x.svg)}
+.included li.feature-unavailable::before{content:"";left:-2px;top:0;width:20px;height:20px;background:#aaa;-webkit-mask-image:url(/catalogo/brand/assets/comparison/linear-x.svg);mask-image:url(/catalogo/brand/assets/comparison/linear-x.svg)}
 .included .feature-note{display:block;margin-top:4px;font-size:12px;line-height:1.4;color:#aaa}
 
 /* Native checkboxes retain their semantics and keyboard behavior, with the same circular glyph as deliveries. */
 .addon input[type="checkbox"]{appearance:none;-webkit-appearance:none;display:block;width:16px;height:16px;min-width:16px;flex:0 0 16px;margin:2px 0 0;border:1px solid #888;border-radius:50%;background:transparent;cursor:pointer;mask:none;-webkit-mask:none}
-.addon input[type="checkbox"]:checked{border:0;border-radius:0;background:var(--package-accent,#d0d6e0);-webkit-mask:url(/brand/assets/comparison/linear-check.svg) center / contain no-repeat;mask:url(/brand/assets/comparison/linear-check.svg) center / contain no-repeat}
+.addon input[type="checkbox"]:checked{border:0;border-radius:0;background:var(--package-accent,#d0d6e0);-webkit-mask:url(/catalogo/brand/assets/comparison/linear-check.svg) center / contain no-repeat;mask:url(/catalogo/brand/assets/comparison/linear-check.svg) center / contain no-repeat}
 .addon:has(input:focus-visible){outline:2px solid var(--package-accent,#d0d6e0);outline-offset:2px}
 @media(forced-colors:active){.addon input[type="checkbox"],.addon input[type="checkbox"]:checked{appearance:auto;-webkit-appearance:checkbox;border:initial;background:initial;-webkit-mask:none;mask:none;accent-color:auto}}
 
