@@ -1,0 +1,49 @@
+/* The hero, palette and type come from the services landing. */
+.hero-copy h1{font-size:clamp(62px,6.7vw,94px);line-height:.96;letter-spacing:-4px}
+.hero-copy>p{max-width:430px}
+.hero-offer>h2{font-size:46px;line-height:1.03;letter-spacing:-2px}
+.catalog-section>.container{padding-top:76px;padding-bottom:88px}
+.catalog-heading{display:flex;justify-content:space-between;align-items:end;gap:28px;margin-bottom:32px}
+.catalog-heading h2{font-size:clamp(38px,4vw,58px);line-height:1.02;letter-spacing:-2px;font-weight:500;margin:14px 0 0}
+.catalog-heading h2 em{font-family:var(--serif);font-weight:400}
+.catalog-heading p{font-size:15px;line-height:1.6;color:#625c60;max-width:300px;margin:0}
+.catalog-plans{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 24px}
+.catalog-plans button{font-size:15px;padding:12px 22px;border:1px solid #d0c8cc;background:transparent;border-radius:99px}
+.catalog-plans button[aria-pressed=true]{background:#000;color:#fff;border-color:#000}
+.plan-description{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:28px;padding:22px 26px;background:#fff;border-radius:19px;font-size:15px;line-height:1.5}
+.plan-description strong{font-size:19px;font-weight:600;white-space:nowrap}
+.plan-description p{margin:0;color:#625c60;text-align:right}
+.catalog-toolbar{display:flex;gap:14px;align-items:end;margin:0 0 26px}
+.catalog-control{display:flex;flex-direction:column;gap:8px;min-width:0;flex:1}
+.catalog-control label{font-size:12px;color:#625c60}
+.catalog-control input,.catalog-control select{width:100%;background:transparent;border:1px solid #c8bfc4;border-radius:8px;padding:12px 14px;font-size:16px;line-height:1.5;min-height:49px}
+.catalog-control select{cursor:pointer}
+.catalog-result{font-size:13px;color:#625c60;margin:0 0 22px;min-height:20px}
+.client-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.client-card{min-width:0;border-radius:19px;overflow:hidden;background:#fff;border:1px solid #dcd5d8}
+.client-preview{display:grid;grid-template-columns:minmax(0,1fr) 24%;gap:14px;align-items:start;aspect-ratio:1.7;padding:20px;background:#ded8dc;overflow:hidden}
+.client-preview img{display:block;width:100%;height:100%;object-fit:contain;object-position:top;background:#fff;box-shadow:0 3px 14px #00000016}
+.client-preview img:last-child{object-fit:cover}
+.client-caption{padding:24px}
+.client-topline{display:flex;justify-content:space-between;gap:14px;align-items:center}
+.client-caption h3{font-size:27px;line-height:1.15;letter-spacing:-.9px;font-weight:500;margin:0}
+.client-caption .model-sector{font-size:14px;color:#625c60;margin:9px 0 22px;line-height:1.5}
+.model-badge{padding:6px 10px;border:1px solid #dcd5d8;border-radius:99px;font-size:11px;white-space:nowrap}
+.client-actions{display:flex;gap:10px;align-items:stretch}
+.client-actions a{display:flex;flex:1;justify-content:space-between;gap:16px;align-items:center;font-size:14px;line-height:1.4;padding:13px 15px;border-radius:8px;border:1px solid #dcd5d8}
+.client-actions .view-model{background:#000;border-color:#000;color:#fff}
+.client-actions a:hover{box-shadow:0 3px 10px #00000016}
+.catalog-empty{grid-column:1/-1;padding:36px 0;font-size:18px}
+.catalog-footer{border-top:1px solid #dcd5d8;padding:32px 0;font-size:13px}
+.catalog-footer .inner{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.catalog-footer nav{display:flex;gap:24px}
+.card-contact-link{border:0;background:none;text-align:left;color:#fff}
+.client-grid[aria-busy=true]{opacity:.7}
+.catalog-card-note{font-size:12px;line-height:1.6;color:#625c60;margin:28px 0 0}
+.public-access{min-height:95svh}
+.public-access .hero-offer{margin-top:0}
+.access-description{font-size:16px!important;line-height:1.6!important;max-width:34ch}
+:focus-visible{outline:2px solid currentColor;outline-offset:5px}
+@media(max-width:900px){.hero-offer>h2{font-size:40px}.hero-copy h1{font-size:76px}.client-preview{padding:14px;gap:10px}.client-caption{padding:20px}.client-actions{flex-direction:column}}
+@media(max-width:760px){.hero-copy h1{font-size:clamp(64px,12vw,86px);letter-spacing:-3px}.catalog-heading{align-items:start;flex-direction:column;gap:22px}.catalog-heading p{max-width:none}.client-grid{grid-template-columns:1fr}.plan-description{align-items:start;flex-direction:column;gap:8px;padding:22px}.plan-description p{text-align:left}.catalog-section>.container{padding-top:54px;padding-bottom:64px}.catalog-toolbar{flex-direction:column;align-items:stretch}.catalog-plans button{font-size:14px;padding:11px 17px}.client-actions{flex-direction:row}.catalog-footer nav{gap:20px}.hero-offer>h2{font-size:48px}}
+@media(max-width:479px){.hero-copy h1{font-size:60px;letter-spacing:-3px}.hero-nav nav{gap:8px}.hero-nav nav a{font-size:12px;padding:9px}.hero-nav nav a:last-child{display:none}.hero-offer>h2{font-size:42px}.catalog-heading h2{font-size:44px}.client-caption h3{font-size:26px}.client-topline{align-items:start;flex-direction:column;gap:10px}.client-actions{flex-direction:column}.client-preview{padding:12px;gap:9px}.client-caption{padding:22px}.catalog-footer{padding:28px 0}.catalog-plans{gap:7px}.catalog-plans button{padding:11px 13px}.hero-copy>p{font-size:19px;line-height:1.5}}
