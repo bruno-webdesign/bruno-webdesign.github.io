@@ -4,14 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://avaliacoes-projetos.bruniversamente.workers.dev; form-action 'none'; base-uri 'none'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
   <title>Avalie seu projeto | Bruno Nascimento</title>
   <link rel="icon" href="/favicon.svg">
   <link rel="stylesheet" href="avaliacao.css">
   <script src="avaliacao.js" defer></script>
 </head>
 <body>
-  <div class="preview-bar"><span class="preview-dot"></span><span id="availability-status">A avaliação estará disponível em breve.</span></div>
+  <div class="preview-bar"><span class="preview-dot"></span><span id="availability-status" role="status">Carregando avaliação…</span></div>
   <div class="page-frame">
     <header class="site-header">
       <a class="brand" href="/servicos/" aria-label="Bruno Nascimento, página de serviços"><img src="/favicon.svg" width="42" height="42" alt=""></a>
@@ -57,7 +58,7 @@
           <div class="form-footer"><button class="primary-button" type="submit" disabled aria-describedby="availability-status"><span class="button-face" aria-hidden="true"><img src="/servicos/assets/contact-smile/purple-face.svg" width="20" height="20" alt=""></span>Enviar avaliação <span aria-hidden="true">↗</span></button></div>
         </form>
         <section id="complete-panel" class="complete-panel" aria-labelledby="complete-title" hidden tabindex="-1"><img src="/servicos/assets/contact-smile/yellow-face.svg" width="86" height="86" alt=""><h2 id="complete-title">Obrigado pela avaliação!</h2></section>
-        <noscript>Ative o JavaScript para testar a avaliação. O envio ainda está indisponível.</noscript>
+        <noscript>Ative o JavaScript para enviar sua avaliação.</noscript>
       </div>
     </main>
     <footer class="site-footer"><span>Bruno Nascimento · Design e web</span><span>Uma conversa depois da entrega.</span></footer>
