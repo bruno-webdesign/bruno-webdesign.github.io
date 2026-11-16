@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+  <title>Avalie seu projeto | Bruno Nascimento</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="avaliacao.css">
+  <script src="avaliacao.js" defer></script>
+</head>
+<body>
+  <div class="preview-bar"><span class="preview-dot"></span><span id="availability-status">A avaliação estará disponível em breve.</span></div>
+  <div class="page-frame">
+    <header class="site-header">
+      <a class="brand" href="/servicos/" aria-label="Bruno Nascimento, página de serviços"><img src="/favicon.svg" width="42" height="42" alt=""></a>
+      <span class="brand-name">Bruno Nascimento<br><span>Design e web</span></span>
+      <a class="back-link" href="/servicos/">Ver o site <span aria-hidden="true">↗</span></a>
+    </header>
+    <main id="conteudo" class="layout">
+      <aside class="intro">
+        <span class="pill"><i aria-hidden="true"></i>Depois da entrega</span>
+        <h1>Como foi<br>o seu <em>projeto?</em></h1>
+        <p>Me conte como foi trabalhar comigo.</p>
+        <div class="thank-you"><img src="/servicos/assets/contact-smile/yellow-face.svg" width="82" height="82" alt=""><div>Obrigado por<br><em>construir comigo.</em></div></div>
+      </aside>
+      <div class="form-card">
+        <form id="evaluation-form" novalidate>
+          <div class="card-heading"><h2>Sua avaliação</h2><p>Seus comentários ficam privados.</p></div>
+          <div id="form-error" class="error-box" role="alert" tabindex="-1" hidden></div>
+          <div class="identity-grid">
+            <label for="client-name">Seu nome <span class="optional">(opcional)</span><input id="client-name" name="clientName" autocomplete="name" maxlength="100"></label>
+            <label for="project-name">Projeto ou negócio <span class="optional">(opcional)</span><input id="project-name" name="projectName" autocomplete="organization" maxlength="120"></label>
+          </div>
+          <fieldset class="rating-field"><legend>Como foi a experiência?</legend><p class="field-help" id="rating-help">Escolha uma nota.</p>
+            <div class="rating" aria-describedby="rating-help">
+              <label><input type="radio" name="rating" value="1" required><span><b aria-hidden="true">☆</b>1</span><span class="sr-only">Muito insatisfeito</span></label>
+              <label><input type="radio" name="rating" value="2"><span><b aria-hidden="true">☆</b>2</span><span class="sr-only">Insatisfeito</span></label>
+              <label><input type="radio" name="rating" value="3"><span><b aria-hidden="true">☆</b>3</span><span class="sr-only">Nem satisfeito nem insatisfeito</span></label>
+              <label><input type="radio" name="rating" value="4"><span><b aria-hidden="true">☆</b>4</span><span class="sr-only">Satisfeito</span></label>
+              <label><input type="radio" name="rating" value="5"><span><b aria-hidden="true">☆</b>5</span><span class="sr-only">Muito satisfeito</span></label>
+            </div><div class="rating-scale" aria-hidden="true"><span>Ruim</span><span>Ótimo</span></div><p id="rating-description" class="rating-description" aria-live="polite"></p>
+          </fieldset>
+          <label class="text-field" for="worked">O que funcionou bem? <span class="optional">(opcional)</span><textarea id="worked" name="worked" rows="3" maxlength="2000" placeholder=""></textarea></label>
+          <label class="text-field" for="improve">O que posso melhorar? <span class="optional">(opcional)</span><textarea id="improve" name="improve" rows="3" maxlength="2000" placeholder=""></textarea></label>
+          <div class="section-rule"></div>
+          <section id="testimonial-section" aria-labelledby="testimonial-title">
+            <div class="public-heading"><span class="mini-smile" aria-hidden="true"><img src="/servicos/assets/contact-smile/purple-face.svg" width="40" height="40" alt=""></span><h2 id="testimonial-title">Seu depoimento <span class="optional">(opcional)</span></h2></div>
+            <label class="sr-only" for="testimonial">Seu depoimento (opcional)</label><textarea id="testimonial" name="testimonial" rows="4" maxlength="2000"></textarea>
+            <div class="permission-options"><label><input type="checkbox" name="publish" value="yes" checked>Autorizo publicar meu depoimento no site de Bruno.</label></div>
+            <div id="publication-fields">
+              <label for="public-name">Nome para divulgação<input id="public-name" name="publicName" maxlength="120" autocomplete="off" placeholder="Como você quer aparecer"></label>
+            </div>
+          </section>
+          <section id="portfolio-section" class="portfolio-permission" aria-labelledby="portfolio-title"><h2 id="portfolio-title">Projeto no portfólio</h2><div class="permission-options"><label><input type="checkbox" name="portfolio" value="authorized" checked>Autorizo divulgar o resultado final no portfólio de Bruno.</label></div><p class="field-help">Sem dados privados, acessos ou arquivos editáveis. A divulgação não autoriza terceiros a reutilizar o projeto.</p></section>
+          <div class="form-footer"><button class="primary-button" type="submit" disabled aria-describedby="availability-status"><span class="button-face" aria-hidden="true"><img src="/servicos/assets/contact-smile/purple-face.svg" width="20" height="20" alt=""></span>Enviar avaliação <span aria-hidden="true">↗</span></button></div>
+        </form>
+        <section id="complete-panel" class="complete-panel" aria-labelledby="complete-title" hidden tabindex="-1"><img src="/servicos/assets/contact-smile/yellow-face.svg" width="86" height="86" alt=""><h2 id="complete-title">Obrigado pela avaliação!</h2></section>
+        <noscript>Ative o JavaScript para testar a avaliação. O envio ainda está indisponível.</noscript>
+      </div>
+    </main>
+    <footer class="site-footer"><span>Bruno Nascimento · Design e web</span><span>Uma conversa depois da entrega.</span></footer>
+  </div>
+</body>
+</html>
