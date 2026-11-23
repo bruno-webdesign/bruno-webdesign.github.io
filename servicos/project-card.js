@@ -7,9 +7,10 @@
   const image=card?.querySelector('img');
   if(!card||!image||!title||!tabs)return;
   const content={
-    sites:{label:'Web design',first:'Seu negócio.',last:'Na web.',src:'assets/project-card/site-blue.webp'},
-    marca:{label:'Marca + site',first:'Sua marca.',last:'Bem apresentada.',src:'assets/project-card/marca-pink.webp'},
-    divulgacao:{label:'Divulgação',first:'Sua próxima',last:'campanha.',src:'assets/project-card/divulgacao-orange.webp'}
+    sites:{label:'Web design',colors:'azul e violeta',first:'Seu negócio.',last:'Na web.',src:'assets/project-card/site-blue.webp'},
+    identidade:{label:'Marca',colors:'tons de verde',first:'Sua marca.',last:'Com identidade.',src:'assets/project-card/marca-green.png'},
+    marca:{label:'Marca + site',colors:'rosa e violeta',first:'Sua marca.',last:'Bem apresentada.',src:'assets/project-card/marca-pink.webp'},
+    divulgacao:{label:'Divulgação',colors:'laranja e amarelo',first:'Sua próxima',last:'campanha.',src:'assets/project-card/divulgacao-orange.webp'}
   };
   // Decode a service card only when requested, preserving the visible card during a switch.
   const ready=new Map();
@@ -29,7 +30,7 @@
     currentPath=id;
     if(!await prepare(id)||currentPath!==id)return;
     image.src=item.src;
-    image.alt=`Cartão de ${item.label}: ${id==='sites'?'azul e violeta':id==='marca'?'rosa e violeta':'laranja e amarelo'}.`;
+    image.alt=`Cartão de ${item.label}: ${item.colors}.`;
     card.dataset.path=id;
     const first=document.createTextNode(item.first);
     const line=document.createElement('br');

@@ -15,21 +15,38 @@ export function partCost(catalog, id, {now = Date.now(), regular = false} = {}) 
   const initial = active && Object.hasOwn(catalog.campaign.part_prices, id)
     ? catalog.campaign.part_prices[id]
     : (!catalog.campaign && !regular ? part.promo ?? part.price ?? 0 : part.price ?? 0);
-  return {initial, monthly: part.monthly ?? 0};
+  const monthly = (active ? catalog.campaign.monthly_prices?.[id] : undefined) ?? part.monthly ?? 0;
+  return {initial, monthly};
+}
+
+export const addonQuantityLimit = addon => addon.quantity.max ?? 999;
+
+export function addonQuantity(addon, requested) {
+  const rule = addon?.quantity;
+  if (!rule) return 1;
+  return Number.isSafeInteger(requested) && requested >= rule.min && requested <= addonQuantityLimit(addon)
+    ? requested
+    : rule.previous;
 }
 
 export function calculateSelection(catalog, selection, {now = Date.now(), regular = false} = {}) {
   const option = catalog.paths.find(path => path.id === selection.path)?.options.find(item => item.id === selection.package);
   if (!option) throw Error('unknown_package');
-  const selected = new Set([...option.parts, ...(selection.addons ?? [])]);
+  const quotedAddons = new Set(catalog.addons?.filter(addon => addon.quote).map(addon => addon.id));
+  const pricedAddons = (selection.addons ?? []).filter(id => !quotedAddons.has(id));
+  const unitAddons = new Map(catalog.addons?.filter(addon => addon.quantity && pricedAddons.includes(addon.id))
+    .map(addon => [addon.id, addon]));
+  const selected = new Set([...option.parts, ...pricedAddons]);
   const settings = {now, regular};
   const sum = ids => [...ids].reduce((total, id) => {
+    const addon = unitAddons.get(id);
     const price = partCost(catalog, id, settings);
-    return {initial: total.initial + cents(price.initial), monthly: total.monthly + cents(price.monthly)};
+    const initial = addon ? cents(addon.quantity.price) * addonQuantity(addon, selection.quantities?.[id]) : cents(price.initial);
+    return {initial: total.initial + initial, monthly: total.monthly + cents(price.monthly)};
   }, {initial: 0, monthly: 0});
   const raw = sum(selected);
   const active = !regular && campaignIsActive(catalog, now);
-  const candidates = catalog.combos.filter(combo => combo.parts.every(id => selected.has(id))).map(combo => {
+  const candidates = catalog.combos.filter(combo => combo.parts.every(id => selected.has(id) && !unitAddons.has(id))).map(combo => {
     const separate = sum(combo.parts);
     const promotional = active ? catalog.campaign.combo_prices[partsKey(combo.parts)] : undefined;
     const initial = Math.min(cents(combo.price), promotional === undefined ? Infinity : cents(promotional));

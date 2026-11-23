@@ -1,7 +1,7 @@
 (async () => {
   'use strict';
-  const {calculateSelection,partCost,campaignIsActive,projectPayments}=await import('./pricing.mjs?v=20261114-bf');
-  const {buildServicesSchema,serializeSchema}=await import('./schema.mjs?v=20261115-seo');
+  const {calculateSelection,partCost,campaignIsActive,projectPayments,addonQuantity,addonQuantityLimit}=await import('./pricing.mjs?v=20261123-textos-por-unidade');
+  const {buildServicesSchema,serializeSchema}=await import('./schema.mjs?v=bf-mensal-20261123');
   const $=s=>document.querySelector(s);
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n);
@@ -17,20 +17,35 @@
   const path=()=>data.paths.find(p=>p.id===state.path);
   const choice=()=>state.choices[state.path];
   const option=()=>path().options.find(o=>o.id===choice().package);
-  function allowed(){const ids=state.path==='divulgacao'?data.growth_addons[option().id]:data.allowed_addons[state.path];return ids.filter(id=>!option().parts.includes(id));}
+  function allowedFor(service, selectedPackage){
+    const defaults = service.id==='divulgacao' ? data.growth_addons[selectedPackage.id] : data.allowed_addons[service.id];
+    const extras = data.package_addons?.[selectedPackage.id] ?? [];
+    return [...new Set([...extras,...(defaults??[])])].filter(id=>!selectedPackage.parts.includes(id));
+  }
+  const allowed=()=>allowedFor(path(),option());
+  const addonById=id=>data.addons.find(addon=>addon.id===id);
+  const selectedAddons=()=>choice().addons.map(addonById);
+  const quantityFor=addon=>addonQuantity(addon,choice().quantities?.[addon.id]);
+  const addonLabel=addon=>addon.quantity?`${quantityFor(addon)} × ${addon.title}`:addon.title;
+  const selection=()=>({path:state.path,package:choice().package,addons:choice().addons,quantities:choice().quantities});
   function sanitize(){
     if(!data.paths.some(p=>p.id===state.path))state.path='sites';
     for(const p of data.paths){
       let c=state.choices[p.id];
       if(!c||typeof c!=='object'||!p.options.some(o=>o.id===c.package))c=state.choices[p.id]={package:p.options[0].id,addons:[]};
-      const o=p.options.find(o=>o.id===c.package),ids=p.id==='divulgacao'?data.growth_addons[o.id]:data.allowed_addons[p.id];
+      const o=p.options.find(o=>o.id===c.package),ids=allowedFor(p,o);
+      if(p.id==='divulgacao'&&o.id==='anuncios'&&ids.includes('landing_anuncios')&&Array.isArray(c.addons)){
+        c.addons=c.addons.map(id=>id==='site'?'landing_anuncios':id);
+      }
       c.addons=Array.isArray(c.addons)?[...new Set(c.addons)].filter(id=>ids.includes(id)&&!o.parts.includes(id)):[];
+      c.quantities=Object.fromEntries(c.addons.filter(id=>addonById(id)?.quantity)
+        .map(id=>[id,addonQuantity(addonById(id),c.quantities?.[id])]));
     }
   }
   function calculate(){
-    const selection={path:state.path,package:choice().package,addons:choice().addons};
-    const total=calculateSelection(data,selection);
-    const base=calculateSelection(data,{...selection,addons:[]});
+    const current=selection();
+    const total=calculateSelection(data,current);
+    const base=calculateSelection(data,{...current,addons:[]});
     return {...total,extraInitialSaving:total.initialSaving-base.initialSaving,extraMonthlySaving:total.monthlySaving-base.monthlySaving};
   }
   const priceLabel=(initial,monthly)=>[initial?money(initial):'',monthly?money(monthly)+'/mês':''].filter(Boolean).join(' + ');
@@ -66,15 +81,30 @@
     const o=option(),p=path(),t=calculate();
     const scopeOpen=!!$('.scope[open]'),addonsOpen=!!$('.addons-details[open]');
     document.querySelectorAll('.path-tabs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.path===state.path)));
-    const publicLimits=o.limits.replace(' Operação ou parceiro responsável deve estar definido antes da oferta comercial.','').replace(' Novas entregas precisam respeitar as condições já anunciadas.','');
+    const extras = selectedAddons();
+    const suppliesSite = p.id === 'sites' || p.id === 'marca';
+    const buysBrand = extras.some(addon => addon.id === 'marca');
+    const buysTexts = extras.some(addon => addon.id === 'textos');
+    const needsBrand = p.id === 'sites' && !buysBrand;
+    const siteMaterials = suppliesSite ? [
+      'Você fornece as informações do negócio e as imagens.',
+      needsBrand ? 'Envie também sua identidade visual.' : 'Aplico a identidade criada para você no site.',
+      buysTexts ? 'Escrevo os textos selecionados a partir das suas informações. Você envia o conteúdo das demais páginas ou seções.' : 'Você envia os textos. A redação é um complemento.'
+    ].join(' ') : '';
+    const publicLimits=[siteMaterials,o.limits].filter(Boolean).join(' ');
     const activeCampaign=campaignIsActive(data);
     $('#services-schema').textContent=serializeSchema(buildServicesSchema(data));
-    const regular=calculateSelection(data,{path:state.path,package:choice().package,addons:choice().addons},{regular:true});
+    const regular=calculateSelection(data,selection(),{regular:true});
     const regularTotal=regular.initial;
     const blackFridayReduction=activeCampaign?Math.max(0,regularTotal-t.initial):0;
-    const offerLabel=blackFridayReduction>0?'Oferta Black Friday':'';
-    const discountRate=regularTotal?100*blackFridayReduction/regularTotal:0;
-    const discountPercent=(discountRate>=1?Math.floor(discountRate):Math.floor(discountRate*10)/10).toLocaleString('pt-BR',{maximumFractionDigits:1});
+    const monthlyReduction=activeCampaign?Math.max(0,regular.monthly-t.monthly):0;
+    const offerLabel=blackFridayReduction>0||monthlyReduction>0?'Oferta Black Friday':'';
+    const formatDiscount=(regularPrice,discount)=>{
+      const rate=regularPrice?100*discount/regularPrice:0;
+      return (rate>=1?Math.floor(rate):Math.floor(rate*10)/10).toLocaleString('pt-BR',{maximumFractionDigits:1});
+    };
+    const discountPercent=formatDiscount(regularTotal,blackFridayReduction);
+    const monthlyDiscountPercent=formatDiscount(regular.monthly,monthlyReduction);
     const payment=projectPayments(t.initial);
     $('#campaign-art-logo').hidden=!activeCampaign;
     $('#campaign-conditions').hidden=!activeCampaign;
@@ -89,20 +119,59 @@
 
     const highlightedPrices=[
       t.initial?`<div class="payment-total" data-payment="initial">${blackFridayReduction?`<p class="regular-comparison">De <s>${money(regularTotal)}</s></p>`:''}<div class="price-row${blackFridayReduction?' price-row--discount':''}">${blackFridayReduction?`<span class="discount-percent">−${discountPercent}%</span>`:''}${priceMarkup(t.initial)}</div></div>`:'',
-      t.monthly?`<div class="payment-total" data-payment="monthly"><div class="price-row">${priceMarkup(t.monthly)}<span class="term">/mês</span></div></div>`:''
+      t.monthly?`<div class="payment-total" data-payment="monthly">${monthlyReduction?`<p class="regular-comparison">De <s>${money(regular.monthly)}</s></p>`:''}<div class="price-row${monthlyReduction?' price-row--discount':''}">${monthlyReduction?`<span class="discount-percent">−${monthlyDiscountPercent}%</span>`:''}${priceMarkup(t.monthly)}<span class="term">/mês</span></div></div>`:''
     ].join('');
+    const mediaBudgetNote = o.id === "anuncios" || extras.some(addon => addon.id === "anuncios_instagram")
+      ? '<p class="media-budget-note">Verba de mídia paga à parte</p>' : "";
     const comparison=o.feature_comparison??o.features.map(text=>({text,included:true}));
-    const featureMarkup=feature=>`<li${feature.included?'':` class="feature-unavailable" aria-label="${esc(feature.text)}: fora deste pacote"`}><span>${esc(feature.text)}${feature.note?` <small class="feature-note">${esc(feature.note)}</small>`:''}</span></li>`;
-    const baseFeatures=comparison.filter(feature=>feature.included).map(featureMarkup).join('');
-    const unavailableFeatures=comparison.filter(feature=>!feature.included).map(featureMarkup).join('');
-    const extraFeatures=allowed().filter(id=>choice().addons.includes(id)).map(id=>{
-      const addon=data.addons.find(item=>item.id===id);
-      return `<li data-included-addon="${esc(id)}">${esc(addon.feature??addon.title)}</li>`;
+    const purchasedIds = new Set();
+    const addonFeature = addon => ({
+      text: addon.quantity ? addonLabel(addon) : addon.feature ?? addon.title,
+      note: 'Adicionado ao pedido',
+      included: true,
+      addonId: addon.id
+    });
+    const featureMarkup=feature=>`<li${feature.included?'':` class="feature-unavailable" aria-label="${esc(feature.text)}: fora deste pacote"`}${feature.addonId?` data-included-addon="${esc(feature.addonId)}"`:''}><span>${esc(feature.text)}${feature.note?` <small class="feature-note">${esc(feature.note)}</small>`:''}</span></li>`;
+    const deliveryMarkup = feature => {
+      const purchased = !feature.included && extras.find(addon => addon.id === feature.addon);
+      if (!purchased) return featureMarkup(feature);
+      purchasedIds.add(purchased.id);
+      return featureMarkup(addonFeature(purchased));
+    };
+    const group = (title, items) => '<div><h4>'+esc(title)+'</h4><ul>'+items+'</ul></div>';
+    const groupMarkup = (brand, site) => '<div class="delivery-groups">'+group('Identidade visual',brand)+group('Site',site)+'</div>';
+    const scopeItems = items => items.map(text => '<li>'+esc(text)+'</li>').join('');
+    const baseDeliveries = o.brandFeatures
+      ? groupMarkup(comparison.filter(feature=>o.brandFeatures.includes(feature.text)).map(deliveryMarkup).join(''),
+          comparison.filter(feature=>!o.brandFeatures.includes(feature.text)).map(deliveryMarkup).join(''))
+      : '<ul>'+comparison.map(deliveryMarkup).join('')+'</ul>';
+    const extraFeatures = extras.filter(addon => !addon.quote && !purchasedIds.has(addon.id))
+      .map(addon => featureMarkup(addonFeature(addon))).join('');
+    const deliveries = baseDeliveries + (extraFeatures ? '<ul>'+extraFeatures+'</ul>' : '');
+    const scopeContents = o.brandDetails
+      ? groupMarkup(scopeItems(o.brandDetails),scopeItems(o.details.filter(text=>!o.brandDetails.includes(text))))
+      : '<ul>'+scopeItems(o.details)+'</ul>';
+
+    const additions=allowed().map(id=>{
+      const addon=addonById(id);
+      const rule=addon.quantity;
+      const checked=choice().addons.includes(id);
+      let cost='Sob orçamento';
+      if(rule){
+        cost=`${money(rule.price)} ${rule.unit}${rule.min>1?` · mínimo de ${rule.min}`:''}`;
+      }else if(!addon.quote){
+        const currentCost=partCost(data,id);
+        cost=(addon.monthly?'Mensalidade':'Pagamento único')+': + '+priceLabel(currentCost.initial,currentCost.monthly)+(addon.unit?' '+addon.unit:'');
+      }
+      const card=`<label class="addon"><input type="checkbox" data-addon="${esc(id)}" ${checked?'checked':''}><span><b>${esc(addon.title)}</b><small>${esc(addon.description)}</small><small class="addon-cost">${esc(cost)}</small></span></label>`;
+      if(!rule||!checked)return card;
+      const quantity=quantityFor(addon);
+      return `<div class="addon-with-quantity">${card}<div class="addon-quantity" role="group" aria-label="Quantidade de ${esc(addon.title)}"><button type="button" data-quantity="${esc(id)}" data-step="-1" aria-label="Diminuir quantidade de ${esc(addon.title)}" ${quantity<=rule.min?'disabled':''}>−</button><output>${quantity}</output><button type="button" data-quantity="${esc(id)}" data-step="1" aria-label="Aumentar quantidade de ${esc(addon.title)}" ${quantity>=addonQuantityLimit(addon)?'disabled':''}>+</button><span>${money(Math.round(rule.price*100)*quantity/100)}</span></div></div>`;
     }).join('');
-    const additions=allowed().map(id=>{const a=data.addons.find(a=>a.id===id),currentCost=partCost(data,id);return `<label class="addon"><input type="checkbox" data-addon="${id}" ${choice().addons.includes(id)?'checked':''}><span><b>${esc(a.title)}</b><small>${esc(a.description)}</small><small class="addon-cost">${a.monthly?'Mensalidade':'Pagamento único'}: + ${priceLabel(currentCost.initial,currentCost.monthly)}</small></span></label>`;}).join('');
+    const pendingQuotes=selectedAddons().filter(addon=>addon.quote).map(addon=>addon.title);
     const panel=$('#offer-panel'),existingOptions=panel.querySelector('.offer-options');
     const nextPanel=document.createElement('div');
-    nextPanel.innerHTML=`<div class="offer-options ${p.options.length===2?'two':''}" role="group" aria-label="Pacotes de ${esc(p.short)}">${p.options.map(item=>`<button type="button" data-option="${item.id}" aria-pressed="${item.id===o.id}"><span>${esc(item.title)}</span></button>`).join('')}</div><h3>${esc(o.title)}</h3><p class="offer-description">${esc(o.description)}</p><div class="offer-overview"><div class="offer-values">${offerLabel?`<span class="offer-label">${esc(offerLabel)}</span>`:''}<div class="price-summary">${highlightedPrices}</div></div><div class="included"><span>${o.feature_comparison?'Entregas do pacote':'O que inclui'}</span><ul>${baseFeatures}${extraFeatures}${unavailableFeatures}</ul></div></div><details class="scope" ${scopeOpen?'open':''}><summary>Detalhes do pacote</summary><ul>${o.details.map(f=>`<li>${esc(f)}</li>`).join('')}</ul><p>${esc(publicLimits)}</p>${t.initial?`<p class="scope-payment">Pagamento do projeto: 50% de entrada (${money(payment.entry)}) e 50% na entrega (${money(payment.delivery)}).</p>`:''}<p>Ajustes: ${o.revisions===1?'1 rodada':'2 rodadas'}. Reúna os pedidos de cada rodada em uma lista${o.monthly?', para os conteúdos produzidos, quando houver.':', dentro das entregas combinadas.'}</p></details><details class="addons-details" ${addonsOpen?'open':''}><summary>Complemente seu pacote</summary><div class="addons-list">${additions}</div></details>${choice().addons.length?`<div class="chosen-total" aria-live="polite">${t.initial?`<p>Projeto e complementos <b>${money(t.initial)}</b></p>`:''}${t.monthly?`<p>Serviços mensais <b>${money(t.monthly)}/mês</b></p>`:''}${t.extraInitialSaving>0||t.extraMonthlySaving>0?`<p class="saving">Valor combinado aplicado: redução de ${priceLabel(Math.max(0,t.extraInitialSaving),Math.max(0,t.extraMonthlySaving))} nesta seleção.</p>`:''}</div>`:''}<button type="button" class="offer-cta" data-contact="package"><span class="package-cta-icon" aria-hidden="true"><img src="assets/contact-smile/package-face.svg?v=straight" width="28" height="24" alt=""></span><span class="offer-cta-copy">Quero este pacote <span class="offer-cta-arrow">↗</span></span></button><p class="panel-caption">Confira sua escolha e fale comigo pelo WhatsApp.</p><span class="package-corner-smile" aria-hidden="true"><svg width="265" height="264" viewBox="0 0 265 264" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="132.69" cy="131.967" rx="117.5" ry="117" transform="rotate(-7.67407 132.69 131.967)" fill="currentColor"/><g clip-path="url(#pricing-smile-clip)"><path d="M117.686 121.114C101.257 133.8 77.5712 130.755 64.8847 114.325C63.6885 112.776 63.9745 110.551 65.5237 109.355C67.0728 108.159 69.2978 108.445 70.494 109.994C80.7907 123.329 100.02 125.801 113.355 115.504C126.69 105.207 129.162 85.978 118.865 72.6432C117.669 71.094 117.955 68.869 119.504 67.6728C121.054 66.4766 123.279 66.7627 124.475 68.3118C137.161 84.7416 134.116 108.427 117.686 121.114Z" fill="black"/><path d="M62.3122 86.8531C58.0056 90.1785 56.8025 96.037 59.183 100.718C59.6829 101.7 60.9603 101.98 61.8344 101.305L73.5695 92.2433C76.2729 90.1558 75.4487 85.8789 72.1664 84.9493C68.8808 84.0222 65.2181 84.6093 62.3122 86.8531Z" fill="black"/><path d="M98.5469 58.8741C95.641 61.1179 94.1466 64.513 94.2132 67.9203C94.279 71.3336 98.2117 73.2102 100.915 71.1227L112.65 62.0613C113.524 61.3863 113.577 60.0798 112.753 59.3476C108.827 55.8606 102.854 55.5427 98.5477 58.8681L98.5469 58.8741Z" fill="black"/></g><defs><clipPath id="pricing-smile-clip"><rect width="75.2875" height="60.96" fill="white" transform="translate(50.6345 95.8701) rotate(-37.6741)"/></clipPath></defs></svg></span>`;
+    nextPanel.innerHTML=`<div class="offer-options ${p.options.length===2?'two':''}" role="group" aria-label="Pacotes de ${esc(p.short)}">${p.options.map(item=>`<button type="button" data-option="${item.id}" aria-pressed="${item.id===o.id}"><span>${esc(item.title)}</span></button>`).join('')}</div><h3>${esc(o.title)}</h3><p class="offer-description">${esc(o.description)}</p><div class="offer-overview"><div class="offer-values">${offerLabel?`<span class="offer-label">${esc(offerLabel)}</span>`:''}<div class="price-summary">${highlightedPrices}</div>${mediaBudgetNote}</div><div class="included${o.brandFeatures?' grouped-included':''}"><span>${o.feature_comparison?'Entregas do pacote':'O que inclui'}</span>${deliveries}</div></div><details class="scope" ${scopeOpen?'open':''}><summary>Detalhes do pacote</summary>${scopeContents}<p>${esc(publicLimits)}</p>${t.initial?`<p class="scope-payment">Pagamento do projeto: 50% de entrada (${money(payment.entry)}) e 50% na entrega (${money(payment.delivery)}).</p>`:''}<p>Ajustes: ${o.revisions===1?'1 rodada':'2 rodadas'}. Reúna os pedidos de cada rodada em uma lista${o.monthly?', para os conteúdos produzidos, quando houver.':', dentro das entregas combinadas.'}</p></details><details class="addons-details" ${additions?'':'hidden'} ${addonsOpen?'open':''}><summary>Complemente seu pacote</summary><div class="addons-list">${additions}</div></details>${choice().addons.length?`<div class="chosen-total" aria-live="polite">${pendingQuotes.length?`<p>Itens sob orçamento: ${esc(pendingQuotes.join(", "))}. Serão cotados à parte.</p>`:""}${t.initial?`<p>Projeto e complementos <b>${money(t.initial)}</b></p>`:''}${t.monthly?`<p>Serviços mensais <b>${money(t.monthly)}/mês</b></p>`:''}${t.extraInitialSaving>0||t.extraMonthlySaving>0?`<p class="saving">Valor combinado aplicado: redução de ${priceLabel(Math.max(0,t.extraInitialSaving),Math.max(0,t.extraMonthlySaving))} nesta seleção.</p>`:''}</div>`:''}<button type="button" class="offer-cta" data-contact="package"><span class="package-cta-icon" aria-hidden="true"><img src="assets/contact-smile/package-face.svg?v=straight" width="28" height="24" alt=""></span><span class="offer-cta-copy">Quero este pacote <span class="offer-cta-arrow">↗</span></span></button><p class="panel-caption">Confira sua escolha e fale comigo pelo WhatsApp.</p><span class="package-corner-smile" aria-hidden="true"><svg width="265" height="264" viewBox="0 0 265 264" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="132.69" cy="131.967" rx="117.5" ry="117" transform="rotate(-7.67407 132.69 131.967)" fill="currentColor"/><g clip-path="url(#pricing-smile-clip)"><path d="M117.686 121.114C101.257 133.8 77.5712 130.755 64.8847 114.325C63.6885 112.776 63.9745 110.551 65.5237 109.355C67.0728 108.159 69.2978 108.445 70.494 109.994C80.7907 123.329 100.02 125.801 113.355 115.504C126.69 105.207 129.162 85.978 118.865 72.6432C117.669 71.094 117.955 68.869 119.504 67.6728C121.054 66.4766 123.279 66.7627 124.475 68.3118C137.161 84.7416 134.116 108.427 117.686 121.114Z" fill="black"/><path d="M62.3122 86.8531C58.0056 90.1785 56.8025 96.037 59.183 100.718C59.6829 101.7 60.9603 101.98 61.8344 101.305L73.5695 92.2433C76.2729 90.1558 75.4487 85.8789 72.1664 84.9493C68.8808 84.0222 65.2181 84.6093 62.3122 86.8531Z" fill="black"/><path d="M98.5469 58.8741C95.641 61.1179 94.1466 64.513 94.2132 67.9203C94.279 71.3336 98.2117 73.2102 100.915 71.1227L112.65 62.0613C113.524 61.3863 113.577 60.0798 112.753 59.3476C108.827 55.8606 102.854 55.5427 98.5477 58.8681L98.5469 58.8741Z" fill="black"/></g><defs><clipPath id="pricing-smile-clip"><rect width="75.2875" height="60.96" fill="white" transform="translate(50.6345 95.8701) rotate(-37.6741)"/></clipPath></defs></svg></span>`;
     // Keep this row mounted so its column widths can transition between selections.
     if(existingOptions&&panel.dataset.path===state.path){
       nextPanel.querySelector('.offer-options').remove();
@@ -117,17 +186,21 @@
   function summary(){
     const o=option(),t=calculate();
     let text=`Quero saber mais sobre ${o.title} (${path().short}).\n`;
-    if(choice().addons.length)text+='Complementos: '+choice().addons.map(id=>data.addons.find(a=>a.id===id).title).join(', ')+'.\n';
+    const priced=selectedAddons().filter(addon=>!addon.quote);
+    const quotes=selectedAddons().filter(addon=>addon.quote);
+    if(priced.length)text+='Complementos: '+priced.map(addonLabel).join(', ')+'.\n';
+    if(quotes.length)text+='Quero um orçamento para: '+quotes.map(addon=>addon.title).join(', ')+'.\n';
     if(t.initial)text+='Projeto e complementos: '+money(t.initial)+'.\n';
     if(t.monthly)text+='Serviços mensais: '+money(t.monthly)+'/mês.\n';
     if(t.initial){const payment=projectPayments(t.initial);text+='Pagamento do projeto: 50% de entrada ('+money(payment.entry)+') e 50% na entrega ('+money(payment.delivery)+').\n';}
-    const regular=calculateSelection(data,{path:state.path,package:choice().package,addons:choice().addons},{regular:true});
+    const regular=calculateSelection(data,selection(),{regular:true});
     if(campaignIsActive(data)&&t.initial<regular.initial)text+='Black Friday: contratações até 30/11/2026, com proposta aprovada e entrada paga no período. Agenda de execução combinada na proposta.\n';
+    if(campaignIsActive(data)&&t.monthly<regular.monthly)text+='Mensalidade Black Friday para contratações até '+data.campaign.deadline_label+'.\n';
     text+='Domínio, hospedagem, ferramentas e verba de anúncios, quando necessários, ficam à parte.';
     return text;
   }
   function compactSelection(){
-    const t=calculate(),addons=choice().addons.map(id=>data.addons.find(a=>a.id===id).title);
+    const t=calculate(),addons=selectedAddons().map(addon=>addonLabel(addon)+(addon.quote?' (sob orçamento)':''));
     const payment=projectPayments(t.initial);
     return '<div class="contact-selected-heading"><strong>'+esc(option().title)+'</strong><small>'+esc(path().short)+'</small></div>'
       +'<div class="contact-selected-totals">'
@@ -158,7 +231,7 @@
     const draft='Olá, Bruno! Quero conversar sobre meu projeto.'+(includePackage?'\n\n'+summary():'');
     $('#contact-selection').hidden=!includePackage;
     $('#contact-package-summary').innerHTML=includePackage?compactSelection():'';
-    window.dispatchEvent(new CustomEvent('bn:contact',{detail:{selection:includePackage?{path:state.path,package:choice().package,addons:[...choice().addons]}:null,business:'',catalogVersion:data.version}}));
+    window.dispatchEvent(new CustomEvent('bn:contact',{detail:{selection:includePackage?selection():null,business:'',catalogVersion:data.version}}));
     contactBase=draft;updateContactDraft();show($('#contact-dialog'));
   }
   function refreshCampaign(){
@@ -193,7 +266,31 @@
     buttons[next].focus({preventScroll:true});buttons[next].click();
   });
   $('#offer-panel').addEventListener('click',event=>{const button=event.target.closest('[data-option]');if(!button)return;choice().package=button.dataset.option;sanitize();save();render(`[data-option="${button.dataset.option}"]`);});
-  $('#offer-panel').addEventListener('change',event=>{const input=event.target.closest('[data-addon]');if(!input)return;const id=input.dataset.addon;choice().addons=input.checked?[...new Set([...choice().addons,id])]:choice().addons.filter(a=>a!==id);sanitize();save();render(`[data-addon="${id}"]`);});
+  $('#offer-panel').addEventListener('click',event=>{
+    const button=event.target.closest('[data-quantity]');
+    if(!button||button.disabled)return;
+    const {quantity:id,step}=button.dataset;
+    const addon=addonById(id);
+    const next=quantityFor(addon)+Number(step);
+    choice().quantities[id]=next;
+    save();
+    const focusStep=next===addon.quantity.min?'1':next===addonQuantityLimit(addon)?'-1':step;
+    render(`[data-quantity="${id}"][data-step="${focusStep}"]`);
+  });
+  $('#offer-panel').addEventListener('change',event=>{
+    const input=event.target.closest('[data-addon]');
+    if(!input)return;
+    const id=input.dataset.addon;
+    if(input.checked){
+      const otherNamingOption={naming:'naming_basico',naming_basico:'naming'}[id];
+      choice().addons=[...choice().addons.filter(addon=>addon!==otherNamingOption),id];
+      const rule=addonById(id).quantity;
+      if(rule)choice().quantities[id]=rule.min;
+    }else{
+      choice().addons=choice().addons.filter(addon=>addon!==id);
+    }
+    sanitize();save();render(`[data-addon="${id}"]`);
+  });
   // Match the reference slider's 500 ms ease, independently of native scroll timing.
   const benefitTrack=$('#benefit-track'),benefitCards=[...benefitTrack.querySelectorAll('article')];
   let benefitFrame=0,benefitTarget=null;
@@ -220,5 +317,5 @@
   $('#contact-details').addEventListener('input',()=>{if(data)updateContactDraft();});
   $('#contact-details').addEventListener('submit',event=>event.preventDefault());
   $('#whatsapp-link').addEventListener('click',event=>{if(!validateContact())event.preventDefault();});
-  fetch('./catalogo.json?v=services-20261118-pages6').then(r=>{if(!r.ok)throw Error('catalog');return r.json();}).then(catalog=>{data=catalog;sanitize();render();}).catch(()=>{$('#offer-panel').setAttribute('aria-busy','false');announce('Não foi possível carregar a seleção. Os detalhes dos pacotes continuam disponíveis abaixo.');});
+  fetch('./catalogo.json?v=revisao-pacotes-20261123').then(r=>{if(!r.ok)throw Error('catalog');return r.json();}).then(catalog=>{data=catalog;sanitize();render();}).catch(()=>{$('#offer-panel').setAttribute('aria-busy','false');announce('Não foi possível carregar a seleção. Os detalhes dos pacotes continuam disponíveis abaixo.');});
 })();

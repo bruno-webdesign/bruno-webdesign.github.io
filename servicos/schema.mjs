@@ -1,4 +1,4 @@
-import {calculateSelection, campaignIsActive} from './pricing.mjs?v=20261114-bf';
+import {calculateSelection, campaignIsActive} from './pricing.mjs?v=20261123-bf-mensal';
 
 export const pageUrl = 'https://bruno-webdesign.github.io/servicos/';
 export const pageTitle = 'Criação de sites e identidade visual | Bruno Nascimento';
@@ -10,6 +10,7 @@ const catalogId = pageUrl + '#catalogo';
 const serviceId = id => pageUrl + '#servico-' + id;
 const descriptions = {
   sites: 'Criação de sites para apresentar seu negócio e facilitar o contato.',
+  identidade: 'Identidade visual para o seu negócio.',
   marca: 'Identidade visual e site para o seu negócio.',
   divulgacao: 'Conteúdo para Instagram, anúncios e presença nas buscas do Google.'
 };
@@ -18,6 +19,7 @@ const descriptions = {
 export function buildServicesSchema(catalog, {now = Date.now()} = {}) {
   const paths = catalog?.paths ?? [
     {id: 'sites', short: 'Sites'},
+    {id: 'identidade', short: 'Marca'},
     {id: 'marca', short: 'Marca e site'},
     {id: 'divulgacao', short: 'Marketing digital'}
   ];

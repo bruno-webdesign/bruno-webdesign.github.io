@@ -128,30 +128,39 @@
 
 /* Three-position service selector: one track, one sliding selection. */
 .path-guide{text-align:center;color:#716a70;font-size:16px;line-height:22px;margin:32px auto 14px}
-.path-tabs.path-toggle{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;width:min(100%,460px);margin:0 auto 60px;padding:5px;border:1px solid #d2c8ce;border-radius:999px;background:#e2dbdf;box-shadow:inset 0 1px 3px #30252e0c}
-.path-tabs.path-toggle::before{content:"";position:absolute;z-index:-1;left:5px;top:5px;bottom:5px;width:calc((100% - 10px)/3);border-radius:999px;background:#1500ff;box-shadow:0 2px 5px #20102c20;transform:translateX(0);transition:transform 240ms cubic-bezier(.32,.72,0,1),background-color 200ms ease}
-.path-tabs.path-toggle:has([data-path="marca"][aria-pressed="true"])::before{transform:translateX(100%);background:#ff009a}
-.path-tabs.path-toggle:has([data-path="divulgacao"][aria-pressed="true"])::before{transform:translateX(200%);background:#ff8200}
+.path-tabs.path-toggle{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;width:min(100%,570px);margin:0 auto 60px;padding:5px;border:1px solid #d2c8ce;border-radius:999px;background:#e2dbdf;box-shadow:inset 0 1px 3px #30252e0c}
+.path-tabs.path-toggle::before{content:"";position:absolute;z-index:-1;left:5px;top:5px;bottom:5px;width:calc((100% - 10px)/4);border-radius:999px;background:#1500ff;box-shadow:0 2px 5px #20102c20;transform:translateX(0);transition:transform 240ms cubic-bezier(.32,.72,0,1),background-color 200ms ease}
+.pricing{--brand-green:#07c632}
+.path-tabs.path-toggle:has([data-path="identidade"][aria-pressed="true"])::before{transform:translateX(100%);background:var(--brand-green)}
+.path-tabs.path-toggle:has([data-path="marca"][aria-pressed="true"])::before{transform:translateX(200%);background:#ff009a}
+.path-tabs.path-toggle:has([data-path="divulgacao"][aria-pressed="true"])::before{transform:translateX(300%);background:#ff8200}
 .path-tabs.path-toggle button[data-path]{position:relative;min-width:0;min-height:46px;padding:12px 8px;border:0;border-radius:999px;background:transparent;color:#5e555c;font-size:15px;line-height:22px;white-space:nowrap;box-shadow:none;transition:color 180ms ease}
 .path-tabs.path-toggle button[data-path][aria-pressed="true"]{background:transparent;border-color:transparent;color:#fff}
 .path-tabs.path-toggle button[data-path="marca"][aria-pressed="true"]{color:#230d20}
+.path-tabs.path-toggle button[data-path="identidade"][aria-pressed="true"]{color:#08240e}
 .path-tabs.path-toggle button[data-path="divulgacao"][aria-pressed="true"]{color:#241406}
 .path-tabs.path-toggle button:focus-visible{outline:2px solid #151015;outline-offset:2px}
 .path-tabs.path-toggle.is-keyboard::before{transition:none}
 @media(hover:hover) and (pointer:fine){.path-tabs.path-toggle button[data-path]:hover{color:#171017}.path-tabs.path-toggle button[data-path="sites"][aria-pressed="true"]:hover{color:#fff}}
 @media(max-width:767px){.path-guide{font-size:14px;line-height:20px;margin-top:28px}.path-tabs.path-toggle{margin-bottom:36px}}
-@media(max-width:400px){.path-tabs.path-toggle button[data-path]{font-size:13px;padding-inline:4px}}
+@media(max-width:490px){.path-tabs.path-toggle button[data-path]{font-size:13px;line-height:16px;padding-inline:4px;white-space:normal}}
 @media(prefers-reduced-motion:reduce){.path-tabs.path-toggle::before,.path-tabs.path-toggle button[data-path]{transition:none}}
 
 /* Match the selected package border to its service toggle. */
 .offer-panel[data-path="sites"]{--package-accent:#1500ff}
 .offer-panel[data-path="marca"]{--package-accent:#ff009a}
+.offer-panel[data-path="identidade"]{--package-accent:var(--brand-green)}
 .offer-panel[data-path="divulgacao"]{--package-accent:#ff8200}
 .offer-panel[data-path] .offer-options button[data-option][aria-pressed="true"]{border-color:var(--package-accent);box-shadow:inset 0 0 0 1px var(--package-accent)}
 
 /* Show included deliveries beside the totals when the panel has enough room. */
 .offer-panel{container:offer-content / inline-size}
 .offer-values{min-width:0}
+.offer-values .media-budget-note {
+    margin: 10px 0 0;
+    color: #d3d3d3;
+    font-size: .8rem;
+}
 @media(min-width:768px){
  @container offer-content (min-width:450px){
   .offer-overview{display:grid;grid-template-columns:minmax(205px,.95fr) minmax(0,1.05fr);align-items:start;gap:24px;margin:0 0 24px}
@@ -205,6 +214,12 @@
 .included li.feature-unavailable{color:#aaa}
 .included li.feature-unavailable::before{content:"";left:-2px;top:0;width:20px;height:20px;background:#aaa;-webkit-mask-image:url("assets/comparison/linear-x.svg");mask-image:url("assets/comparison/linear-x.svg")}
 .included .feature-note{display:block;margin-top:4px;font-size:12px;line-height:1.4;color:#aaa}
+.offer-overview>.grouped-included{grid-column:1/-1}
+.delivery-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.delivery-groups h4{margin:0 0 10px;color:inherit;font-size:.95rem}
+.offer-overview .delivery-groups ul{grid-template-columns:minmax(0,1fr)}
+.grouped-included>ul:not(:empty){margin-top:16px}
+@media(max-width:540px){.delivery-groups{grid-template-columns:minmax(0,1fr)}}
 
 /* Native checkboxes retain their semantics and keyboard behavior, with the same circular glyph as deliveries. */
 .addon input[type="checkbox"]{appearance:none;-webkit-appearance:none;display:block;width:16px;height:16px;min-width:16px;flex:0 0 16px;margin:2px 0 0;border:1px solid #888;border-radius:50%;background:transparent;cursor:pointer;mask:none;-webkit-mask:none}
@@ -219,6 +234,27 @@
 .offer-panel>.scope,.offer-panel>.addons-details{border-top:1px dashed #fff}
 .offer-panel>.addons-details{border-bottom:1px dashed #fff}
 .offer-panel>.addons-details+.chosen-total{border-top:0}
+.offer-panel .addons-details>summary::after{
+  flex:0 0 20px;
+  display:grid;
+  place-items:center;
+  inline-size:20px;
+  block-size:20px;
+  color:var(--package-accent,#ddd);
+  line-height:1;
+  transform-origin:center;
+}
+.offer-panel .addons-details:not([open])>summary::after{
+  animation:addon-plus-motion 3s ease-in-out infinite;
+}
+@keyframes addon-plus-motion{
+  0%,60%{transform:rotate(0deg) scale(1)}
+  80%{transform:rotate(180deg) scale(1.24)}
+  100%{transform:rotate(360deg) scale(1)}
+}
+@media(prefers-reduced-motion:reduce){
+  .offer-panel .addons-details:not([open])>summary::after{animation:none}
+}
 
 /* The existing FAQ and contact card now form the black page footer. */
 .faq-footer>.faq>.container{padding-top:100px;padding-bottom:80px}
